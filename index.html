@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FLAMES Game - Romantic Edition 💖</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: linear-gradient(145deg, #b2226e 0%, #661244 100%);
+    font-family: 'Pacifico', cursive;
+    color: #ffade1;
+  }
+  h1 {
+    text-align: center;
+    margin: 60px 0 20px;
+    font-size: 3.4rem;
+    text-shadow:
+      0 0 10px #ff5599,
+      0 0 25px #e30e73,
+      0 0 30px #9e0037;
+  }
+  .container {
+    background: rgba(255, 182, 193, 0.15);
+    max-width: 440px;
+    margin: 20px auto 80px;
+    border-radius: 22px;
+    padding: 38px 32px;
+    box-shadow:
+      0 8px 30px 8px #ff3fa1aa,
+      inset 0 0 15px 3px #ff7db5aa;
+    position: relative;
+    z-index: 2;
+  }
+  label {
+    display: block;
+    font-size: 1.25rem;
+    margin: 18px 0 6px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #f9c4e0;
+  }
+  input {
+    width: 100%;
+    border-radius: 14px;
+    border: 1.8px solid #ff7f9e;
+    background: #ffccdf;
+    font-size: 1.3rem;
+    padding: 14px 18px;
+    font-family: 'Pacifico', cursive;
+    letter-spacing: 0.1em;
+    color: #751a3c;
+    transition: border 0.25s ease;
+  }
+  input:focus {
+    border: 2px solid #ff2e73;
+    outline: none;
+    background: #ffc1d9;
+  }
+  button {
+    margin-top: 32px;
+    width: 100%;
+    padding: 16px 0;
+    font-size: 1.5rem;
+    font-family: 'Pacifico', cursive;
+    letter-spacing: 0.12em;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #aa104d, #ff3d7e);
+    border: none;
+    color: #fff7ff;
+    box-shadow:
+      0 2px 12px #ff76b0,
+      inset 0 0 25px #ff2a73;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: linear-gradient(120deg, #ff1c71, #cf0f58);
+  }
+  .run-zone {
+    min-height: 130px;
+    margin-top: 36px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  .letters {
+    white-space: nowrap;
+    font-size: 3rem;
+    color: #ff9ecf;
+    filter: drop-shadow(0 2px 6px #d4427b);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  .letter-bluff {
+    display: inline-block;
+    animation: bounceBluff 1.3s infinite both;
+  }
+  @keyframes bounceBluff {
+    0%   { transform: translateY(0); }
+    18%  { transform: translateY(-18px) rotate(-10deg); }
+    38%  { transform: translateY(12px) rotate(15deg); }
+    64%  { transform: translateY(-8px) rotate(-6deg); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 15px #ff4fa9); }
+    50% { filter: drop-shadow(0 0 28px #ff78c3); }
+  }
+  .result-card {
+    margin-top: 40px;
+    text-align: center;
+    background: rgba(255, 90, 140, 0.4);
+    border-radius: 24px;
+    padding: 28px 20px;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #fff0fb;
+    text-shadow:
+      0 2px 6px #ff4e91,
+      0 0 20px #ffb2d9;
+    letter-spacing: 0.14em;
+    animation: fadeInPop 1.2s ease forwards;
+  }
+  .reset-link {
+    margin-top: 24px;
+    display: inline-block;
+    font-size: 1.5rem;
+    font-family: 'Pacifico', cursive;
+    color: #ff77aa;
+    cursor: pointer;
+    text-shadow: 0 0 8px #ff4a8d;
+    transition: color 0.3s ease;
+  }
+  .reset-link:hover {
+    color: #ff2c72;
+    text-decoration: underline;
+  }
+  @keyframes fadeInPop {
+    0% { opacity: 0; transform: scale(0.7); }
+    50% { opacity: 0.9; transform: scale(1.15); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  /* Glittering hearts background */
+  .heartsBg {
+    pointer-events: none;
+    position: fixed;
+    left: 0; top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .heart {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle at 60% 36%, #fff0f5 43%, #ff79b6 65%, #ad1256 100%);
+    clip-path: polygon(
+      50% 95%, 20% 75%, 10% 50%, 20% 20%, 40% 10%, 50% 30%, 60% 10%, 80% 20%, 90% 50%, 80% 75%
+    );
+    box-shadow: 0 2px 10px #ff93c5aa;
+    opacity: 0.65;
+    animation: floatHeart linear forwards;
+  }
+  @keyframes floatHeart {
+    0% {
+      transform: translateY(110vh) scale(1) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.65;
+    }
+    100% {
+      transform: translateY(-20vh) scale(0.8) rotate(25deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>💖 FLAMES Game 💖</h1>
+  <div class="container">
+    <form id="flamesForm" autocomplete="off">
+      <label for="name1">Your Name</label>
+      <input type="text" id="name1" maxlength="16" placeholder="" required />
+      <label for="name2">Crush/Partner Name</label>
+      <input type="text" id="name2" maxlength="16" placeholder="" required />
+      <button type="submit">See Your Destination 💫</button>
+    </form>
+    <div id="runZone" class="run-zone"></div>
+    <div id="resultCard" class="result-card" style="display:none"></div>
+  </div>
+  <div class="heartsBg" id="heartsBg"></div>
+
+  <script>
+    function createHearts() {
+      const heartBg = document.getElementById('heartsBg');
+      heartBg.innerHTML = '';
+      for (let i = 0; i < 25; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random()*98 + 'vw';
+        heart.style.top = Math.random()*92 + 'vh';
+        heart.style.opacity = (Math.random()*0.4 + 0.45).toFixed(2);
+        heart.style.transform = `scale(${Math.random()*0.6 + 0.7}) rotate(${Math.random()*360}deg)`;
+        heart.style.animationDuration = (Math.random()*8 + 7) + 's';
+        heart.style.animationDelay = (-Math.random()*15) + 's';
+        heartBg.appendChild(heart);
+      }
+    }
+    createHearts();
+    setInterval(createHearts, 9000);
+
+    function flamesResult(name1, name2) {
+      let n1 = name1.toLowerCase().replace(/[^a-z]/g, '');
+      let n2 = name2.toLowerCase().replace(/[^a-z]/g, '');
+      let arr1 = n1.split('');
+      let arr2 = n2.split('');
+      for (let i = 0; i < arr1.length; i++) {
+        const idx = arr2.indexOf(arr1[i]);
+        if (idx !== -1) {
+          arr2.splice(idx, 1);
+          arr1[i] = '';
+        }
+      }
+      const count = arr1.filter(c => c).length + arr2.length;
+      const flamesMap = ["Friends", "Love", "Affection", "Marriage", "Enemy", "Soulmates"];
+      let idx = 0;
+      let flamesArr = flamesMap.slice();
+      while (flamesArr.length > 1) {
+        idx = (idx + count - 1) % flamesArr.length;
+        flamesArr.splice(idx, 1);
+      }
+      return flamesArr[0];
+    }
+
+    function showRunningLetters(name1, name2) {
+      const runZone = document.getElementById('runZone');
+      runZone.innerHTML = '';
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.justifyContent = 'center';
+      container.style.gap = '14px';
+      const firstNameDiv = document.createElement('div');
+      firstNameDiv.className = 'letters';
+      for (let ch of name1) {
+        const span = document.createElement('span');
+        span.className = 'letter-bluff';
+        span.style.animationDelay = (Math.random() * 0.4).toFixed(2) + 's';
+        span.style.color = '#e02e66';
+        span.textContent = ch;
+        firstNameDiv.appendChild(span);
+      }
+      const vsIcon = document.createElement('span');
+      vsIcon.innerHTML = '💘';
+      vsIcon.style.fontSize = '2.7rem';
+      vsIcon.style.alignSelf = 'center';
+      vsIcon.style.margin = '0 10px';
+
+      const secondNameDiv = document.createElement('div');
+      secondNameDiv.className = 'letters';
+      for (let ch of name2) {
+        const span = document.createElement('span');
+        span.className = 'letter-bluff';
+        span.style.animationDelay = (0.3 + Math.random() * 0.5).toFixed(2) + 's';
+        span.style.color = '#bc2160';
+        span.textContent = ch;
+        secondNameDiv.appendChild(span);
+      }
+      container.appendChild(firstNameDiv);
+      container.appendChild(vsIcon);
+      container.appendChild(secondNameDiv);
+      runZone.appendChild(container);
+    }
+
+    function resetForm() {
+      document.getElementById('name1').value = '';
+      document.getElementById('name2').value = '';
+      document.getElementById('runZone').innerHTML = '';
+      const resultCard = document.getElementById('resultCard');
+      resultCard.style.display = 'none';
+      const resetLink = document.getElementById('resetLink');
+      if (resetLink) resetLink.remove();
+      document.getElementById('flamesForm').style.display = 'block';
+      document.getElementById('name1').focus();
+    }
+
+    document.getElementById('flamesForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name1 = document.getElementById('name1').value.trim();
+      const name2 = document.getElementById('name2').value.trim();
+      if (!name1 || !name2) return;
+      showRunningLetters(name1, name2);
+      document.getElementById('flamesForm').style.display = 'none';
+      const resultCard = document.getElementById('resultCard');
+      resultCard.style.display = 'none';
+      setTimeout(() => {
+        const result = flamesResult(name1, name2);
+        resultCard.innerHTML = `FLAMES Result: <b>${result}</b> 💗`;
+
+        // Add other pair link
+        const resetLink = document.createElement('div');
+        resetLink.id = 'resetLink';
+        resetLink.className = 'reset-link';
+        resetLink.textContent = 'Other Pair?';
+        resetLink.onclick = resetForm;
+
+        resultCard.appendChild(resetLink);
+        resultCard.style.display = 'block';
+      }, Math.max(900, 400 + 100 * (name1.length + name2.length)));
+    });
+  </script>
+</body>
+</html>
