@@ -182,4 +182,176 @@
     animation: floatHeart linear forwards;
   }
   @keyframes floatHeart {
-    0
+    0% {
+      transform: translateY(110vh) scale(1) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.65;
+    }
+    100% {
+      transform: translateY(-20vh) scale(0.8) rotate(25deg);
+      opacity: 0;
+    }
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 560px) {
+    h1 {
+      font-size: 2.8rem;
+      margin: 40px 0 18px;
+    }
+    .container {
+      padding: 24px 20px;
+      width: 95%;
+      margin: 20px auto 60px;
+    }
+    button {
+      font-size: 1.3rem;
+      padding: 14px 18px;
+    }
+    .run-zone {
+      min-height: 100px;
+      font-size: 2.4rem;
+    }
+    .letters {
+      font-size: 2.4rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>💖 FLAMES Game 💖</h1>
+  <div class="container">
+    <form id="flamesForm" autocomplete="off">
+      <label for="name1">Your Name</label>
+      <input type="text" id="name1" maxlength="16" placeholder="" required />
+      <label for="name2">Crush/Partner Name</label>
+      <input type="text" id="name2" maxlength="16" placeholder="" required />
+      <button type="submit">See Your Destination 💫</button>
+    </form>
+    <div id="runZone" class="run-zone"></div>
+    <div id="resultCard" class="result-card" style="display:none"></div>
+  </div>
+  <div class="heartsBg" id="heartsBg"></div>
+
+  <script>
+    function createHearts() {
+      const heartBg = document.getElementById('heartsBg');
+      heartBg.innerHTML = '';
+      for (let i = 0; i < 25; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random()*98 + 'vw';
+        heart.style.top = Math.random()*92 + 'vh';
+        heart.style.opacity = (Math.random()*0.4 + 0.45).toFixed(2);
+        heart.style.transform = `scale(${Math.random()*0.6 + 0.7}) rotate(${Math.random()*360}deg)`;
+        heart.style.animationDuration = (Math.random()*8 + 7) + 's';
+        heart.style.animationDelay = (-Math.random()*15) + 's';
+        heartBg.appendChild(heart);
+      }
+    }
+    createHearts();
+    setInterval(createHearts, 9000);
+
+    function flamesResult(name1, name2) {
+      let n1 = name1.toLowerCase().replace(/[^a-z]/g, '');
+      let n2 = name2.toLowerCase().replace(/[^a-z]/g, '');
+      let arr1 = n1.split('');
+      let arr2 = n2.split('');
+      for (let i = 0; i < arr1.length; i++) {
+        const idx = arr2.indexOf(arr1[i]);
+        if (idx !== -1) {
+          arr2.splice(idx, 1);
+          arr1[i] = '';
+        }
+      }
+      const count = arr1.filter(c => c).length + arr2.length;
+      const flamesMap = ["Friends", "Love", "Affection", "Marriage", "Enemy", "Soulmates"];
+      let idx = 0;
+      let flamesArr = flamesMap.slice();
+      while (flamesArr.length > 1) {
+        idx = (idx + count - 1) % flamesArr.length;
+        flamesArr.splice(idx, 1);
+      }
+      return flamesArr[0];
+    }
+
+    function showRunningLetters(name1, name2) {
+      const runZone = document.getElementById('runZone');
+      runZone.innerHTML = '';
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.justifyContent = 'center';
+      container.style.gap = '14px';
+      const firstNameDiv = document.createElement('div');
+      firstNameDiv.className = 'letters';
+      for (let ch of name1) {
+        const span = document.createElement('span');
+        span.className = 'letter-bluff';
+        span.style.animationDelay = (Math.random() * 0.4).toFixed(2) + 's';
+        span.style.color = '#e02e66';
+        span.textContent = ch;
+        firstNameDiv.appendChild(span);
+      }
+      const vsIcon = document.createElement('span');
+      vsIcon.innerHTML = '💘';
+      vsIcon.style.fontSize = '2.7rem';
+      vsIcon.style.alignSelf = 'center';
+      vsIcon.style.margin = '0 10px';
+
+      const secondNameDiv = document.createElement('div');
+      secondNameDiv.className = 'letters';
+      for (let ch of name2) {
+        const span = document.createElement('span');
+        span.className = 'letter-bluff';
+        span.style.animationDelay = (0.3 + Math.random() * 0.5).toFixed(2) + 's';
+        span.style.color = '#bc2160';
+        span.textContent = ch;
+        secondNameDiv.appendChild(span);
+      }
+      container.appendChild(firstNameDiv);
+      container.appendChild(vsIcon);
+      container.appendChild(secondNameDiv);
+      runZone.appendChild(container);
+    }
+
+    function resetForm() {
+      document.getElementById('name1').value = '';
+      document.getElementById('name2').value = '';
+      document.getElementById('runZone').innerHTML = '';
+      const resultCard = document.getElementById('resultCard');
+      resultCard.style.display = 'none';
+      const resetLink = document.getElementById('resetLink');
+      if (resetLink) resetLink.remove();
+      document.getElementById('flamesForm').style.display = 'block';
+      document.getElementById('name1').focus();
+    }
+
+    document.getElementById('flamesForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name1 = document.getElementById('name1').value.trim();
+      const name2 = document.getElementById('name2').value.trim();
+      if (!name1 || !name2) return;
+      showRunningLetters(name1, name2);
+      document.getElementById('flamesForm').style.display = 'none';
+      const resultCard = document.getElementById('resultCard');
+      resultCard.style.display = 'none';
+      setTimeout(() => {
+        const result = flamesResult(name1, name2);
+        resultCard.innerHTML = `FLAMES Result: <b>${result}</b> 💗`;
+
+        // Add other pair link
+        const resetLink = document.createElement('div');
+        resetLink.id = 'resetLink';
+        resetLink.className = 'reset-link';
+        resetLink.textContent = 'Other Pair?';
+        resetLink.onclick = resetForm;
+
+        resultCard.appendChild(resetLink);
+        resultCard.style.display = 'block';
+      }, Math.max(900, 400 + 100 * (name1.length + name2.length)));
+    });
+  </script>
+</body>
+</html>
